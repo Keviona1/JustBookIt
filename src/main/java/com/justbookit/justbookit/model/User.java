@@ -1,8 +1,7 @@
 package com.justbookit.justbookit.model;
 
 import jakarta.persistence.*;
-
-import javax.management.relation.Role;
+import com.justbookit.justbookit.model.Role;
 import java.util.HashSet;
 import java.util.Set;
 

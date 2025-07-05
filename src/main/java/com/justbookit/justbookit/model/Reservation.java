@@ -22,6 +22,15 @@ public class Reservation {
     private Date checkOutDate;
     private double totalPrice;
     private String status;
+private Integer guests;
+
+    public Integer getGuests() {
+        return guests;
+    }
+
+    public void setGuests(Integer guests) {
+        this.guests = guests;
+    }
 
     public Long getId() {
         return id;
