@@ -1,41 +1,12 @@
-package com.justbookit.justbookit.model;
+package com.justbookit.justbookit.dto;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-
-@Entity
-public class Room {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "hotel_id")
-    @JsonBackReference("hotel-rooms")
-    private Hotel hotel;
-
+public class RoomDTO {
     private String roomNumber;
     private String type;
     private int capacity;
     private double pricePerNight;
     private String features;
     private boolean available = true;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Hotel getHotel() {
-        return hotel;
-    }
-
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
-    }
 
     public String getRoomNumber() {
         return roomNumber;

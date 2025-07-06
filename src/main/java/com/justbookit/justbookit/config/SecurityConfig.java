@@ -38,8 +38,20 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+
+
+                        .requestMatchers(HttpMethod.GET, "/api/hotels", "/api/hotels/**").authenticated()
+
+                        .requestMatchers(HttpMethod.POST, "/api/hotels").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/api/hotels/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/api/hotels/**").hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.GET,  "api/reservations", "/api/reservations/**").authenticated()
+
+
                         .anyRequest().authenticated()
                 )
+
 
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

@@ -1,7 +1,8 @@
 package com.justbookit.justbookit.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import com.justbookit.justbookit.model.Role;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,7 +18,9 @@ public class User {
     private String fullName;
     private String phone;
     private boolean enabled = true;
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference("user-reservations")
+    private Set<Reservation> reservations = new HashSet<>();
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
@@ -88,5 +91,13 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
     }
 }

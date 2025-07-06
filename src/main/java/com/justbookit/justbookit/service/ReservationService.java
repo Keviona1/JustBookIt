@@ -32,8 +32,8 @@ public class ReservationService {
         Reservation reservation = new Reservation();
         reservation.setRoom(room);
         reservation.setUser(user);
-        reservation.setCheckInDate(Date.valueOf(dto.getCheckInDate()));
-        reservation.setCheckOutDate(Date.valueOf(dto.getCheckOutDate()));
+        reservation.setCheckInDate(Date.valueOf(dto.getCheckInDate()).toLocalDate());
+        reservation.setCheckOutDate(Date.valueOf(dto.getCheckOutDate()).toLocalDate());
         reservation.setGuests(dto.getGuests());
         reservation.setTotalPrice(room.getPricePerNight() * calculateDays(dto));
         reservation.setStatus("CONFIRMED");

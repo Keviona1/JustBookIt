@@ -52,17 +52,19 @@ public class AuthController {
             Authentication auth = authManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
+
             UserDetails userDetails = (UserDetails) auth.getPrincipal();
             User user = userRepository.findByUsername(userDetails.getUsername())
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User not found after authentication"));
             String token = jwtUtil.generateToken(userDetails);
-
             return ResponseEntity.ok(new AuthResponse(token, user));
 
         } catch (BadCredentialsException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid username or password");
         }
-    } @PostMapping("/register")
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody UserRegistrationDTO dto) {
         logger.info("--- ENTERED /register ENDPOINT ---");
         logger.info("Received registration request for username: {}", dto.getUsername());

@@ -1,5 +1,6 @@
 package com.justbookit.justbookit.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,7 +18,12 @@ public class Hotel {
     private int stars;
     private String amenities;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+    @OneToMany(
+            mappedBy = "hotel",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+     @JsonManagedReference("hotel-rooms")
     private List<Room> rooms = new ArrayList<>();
 
     public Long getId() {
@@ -82,5 +88,10 @@ public class Hotel {
 
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public void addRoom(Room room) {
+        rooms.add(room);
+        room.setHotel(this);
     }
 }

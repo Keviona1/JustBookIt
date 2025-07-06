@@ -9,6 +9,11 @@ public class AuthResponse {
 
     public AuthResponse(String token, User user) {
         this.token = token;
+        this.user = user;
+    }
+
+    public String getToken() {
+        return token;
     }
 
     public void setToken(String token) {
@@ -22,9 +27,4 @@ public class AuthResponse {
     public void setUser(User user) {
         this.user = user;
     }
-
-    public String getToken() {
-        return token;
-    }
 }
-
