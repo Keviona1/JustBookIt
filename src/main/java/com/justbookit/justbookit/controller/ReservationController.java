@@ -53,13 +53,11 @@ public class ReservationController {
         newReservation.setCheckOutDate(request.getCheckOutDate());
         newReservation.setStatus("CONFIRMED");
 
-        // 6. Save the new reservation
         Reservation savedReservation = reservationRepository.save(newReservation);
 
         return ResponseEntity.ok(savedReservation);
     }
 
-    // You need to adjust your availability check to use the correct date types
     private boolean isRoomAvailable(Long roomId, LocalDate checkIn, LocalDate checkOut) {
         List<Reservation> conflictingReservations = reservationRepository.findConflictingReservations(roomId, checkIn, checkOut);
         return conflictingReservations.isEmpty();
@@ -85,30 +83,21 @@ public class ReservationController {
 
     @DeleteMapping("/{reservationId}")
     public ResponseEntity<Void> cancelReservation(@PathVariable Long reservationId) {
-        // 1. Get the username of the currently authenticated user
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         User currentUser = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found"));
 
-        // 2. Fetch the reservation to be cancelled
         Reservation reservation = reservationRepository.findById(reservationId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Reservation not found"));
 
-        // 3. SECURITY CHECK: Verify that the current user owns this reservation
         if (!reservation.getUser().getId().equals(currentUser.getId())) {
-            // If not, they are forbidden from taking this action
             throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to cancel this reservation.");
         }
 
-        // 4. (Optional) Business Logic: You might only allow cancellations up to a certain date
-        // if (reservation.getCheckInDate().isBefore(LocalDate.now().plusDays(1))) {
-        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cancellations must be made at least 24 hours in advance.");
-        // }
 
-        // 5. Delete the reservation from the database
+
         reservationRepository.delete(reservation);
 
-        // Return a 204 No Content success response, which is standard for DELETE operations
         return ResponseEntity.noContent().build();
     }
 
